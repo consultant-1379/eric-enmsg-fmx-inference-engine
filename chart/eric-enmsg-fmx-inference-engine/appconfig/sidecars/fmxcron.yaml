@@ -1,0 +1,39 @@
+name:  fmx-engine-cron
+image: {{ template "eric-enm-common-helmchart-library.registryUrl" . }}/{{ .Values.imageCredentials.repoPath }}/{{ index .Values "images" "fmx-engine-cron" "name" }}:{{ index .Values "images" "fmx-engine-cron" "tag" }}
+imagePullPolicy: {{ .Values.imageCredentials.pullPolicy }}
+securityContext:
+{{- if index .Values "securityContext" }}
+  {{- if index .Values "securityContext" "fmxenginecron" }}
+   {{- toYaml .Values.securityContext.fmxenginecron | nindent 2 }}
+  {{- end }}
+{{- end }}
+args: {{ index .Values "images" "fmx-engine-cron" "args" }}
+resources:
+  requests:
+    memory: {{ .Values.resources.cron.requests.memory | quote }}
+    cpu: {{ .Values.resources.cron.requests.cpu | quote }}
+    {{- if index .Values "resources" "cron" "requests" "ephemeral-storage" }}
+    ephemeral-storage: {{ index .Values "resources" "cron" "requests" "ephemeral-storage" | quote }}
+    {{- end }}
+  limits:
+    memory: {{ .Values.resources.cron.limits.memory | quote }}
+    cpu: {{ .Values.resources.cron.limits.cpu | quote }}
+    {{- if index .Values "resources" "cron" "limits" "ephemeral-storage" }}
+    ephemeral-storage: {{ index .Values "resources" "cron" "limits" "ephemeral-storage" | quote }}
+    {{- end }}
+env:
+  - name: TZ
+    value: {{ .Values.global.timezone }}
+  - name: CENM_DEPLOYMENT
+    value: cenm
+  - name: CENM_MQ_HostKey
+    value: fmx-rabbitmq
+  - name: CONSUL_HTTP_ADDR
+    value: http://kvstore:8500
+  - name: CLOUD_DEPLOYMENT
+    value: "true"
+volumeMounts:
+  - mountPath: /ericsson/tor/data/fmx
+    name: fmx
+  - mountPath: /etc/cron.d
+    name: cron-config

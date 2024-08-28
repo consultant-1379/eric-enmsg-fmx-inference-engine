@@ -1,0 +1,17 @@
+- name: gp
+  configMap:
+    name: gpfmxmsg
+- name: dumps
+  persistentVolumeClaim:
+    claimName: hcdumps
+- name: fmx
+  persistentVolumeClaim:
+    claimName: fmx
+- name: data
+  persistentVolumeClaim:
+    claimName: data
+- name: cron-config
+  emptyDir: {}
+- name: password
+  secret:
+    secretName: eric-data-key-value-database-rd-operand-secret-default

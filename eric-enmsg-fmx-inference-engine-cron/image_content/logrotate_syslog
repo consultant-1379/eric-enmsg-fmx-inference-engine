@@ -1,0 +1,6 @@
+/var/log/messages {
+    rotate 3
+    size 1M
+    copytruncate
+    compress
+}

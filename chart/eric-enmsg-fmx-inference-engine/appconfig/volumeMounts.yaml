@@ -1,0 +1,13 @@
+- mountPath: /gp
+  name: gp
+- mountPath: /ericsson/enm/dumps
+  name: dumps
+- mountPath: /ericsson/tor/data/fmx
+  name: fmx
+- mountPath: /ericsson/tor/data
+  name: data
+- mountPath: /etc/cron.d
+  name: cron-config
+- mountPath: /tmp/ericsson/tor/data/fmx/redis
+  name: password
+  readOnly: true
